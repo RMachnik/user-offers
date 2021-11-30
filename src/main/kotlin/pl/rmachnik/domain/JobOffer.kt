@@ -1,4 +1,4 @@
-package pl.dna.domain
+package pl.rmachnik.domain
 
 import java.time.OffsetDateTime
 

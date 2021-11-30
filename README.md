@@ -1,6 +1,6 @@
-# DNA USER OFFERS
+# USER OFFERS REST API
 
-Simple service with user and offers restful api.
+Simple service with user and offers resources available via REST API.
 
 ## API
-Api available under `/dna-user-offers/api/users` and `/dna-user-offers/api/offers`.
+Api available under `/user-offers/api/users` and `/user-offers/api/offers`.
