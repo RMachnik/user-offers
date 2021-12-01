@@ -15,11 +15,11 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
 //basic functional end-to-end tests, do not have time for junit tests or other types of tests
-internal class OfferControllerTest{
+internal class OfferControllerTest {
     private val app = Application().app
 
     @Test
-    fun `Check user offer creation flow`() = TestUtil.test(app){ _, client->
+    fun `Check user offer creation flow`() = TestUtil.test(app) { _, client ->
         createUser(client)
         val users = JavalinJackson.defaultMapper()
             .readValue<List<UsersController.UserInfo>>(client.get("/user-offers/api/users/").body!!.string())
@@ -44,7 +44,7 @@ internal class OfferControllerTest{
     }
 
     @Test
-    fun `Check filtering of offers`() = TestUtil.test(app){ _, client->
+    fun `Check filtering of offers`() = TestUtil.test(app) { _, client ->
         createUser(client)
         val users = JavalinJackson.defaultMapper()
             .readValue<List<UsersController.UserInfo>>(client.get("/user-offers/api/users/").body!!.string())

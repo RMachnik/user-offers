@@ -17,9 +17,9 @@ class UsersController(private val users: Users) : CrudHandler {
             val newUser = ctx.bodyAsClass<UserDto>()
             users.add(newUser)
         }.onSuccess {
-                ctx.status(201)
-                ctx.json(CreatedUser(it.id))
-            }.onFailure { respondWithError(ctx, it) }
+            ctx.status(201)
+            ctx.json(CreatedUser(it.id))
+        }.onFailure { respondWithError(ctx, it) }
     }
 
     override fun delete(ctx: Context, resourceId: String) {
@@ -43,8 +43,8 @@ class UsersController(private val users: Users) : CrudHandler {
             users.byId(UUID.fromString(resourceId))
                 ?.let { UserInfo(it.id, it.login, it.name, it.creationDate.format(DateTimeFormatter.ISO_DATE)) }
         }.onSuccess {
-                it?.run { ctx.json(it) } ?: run { ctx.status(404) }
-            }.onFailure { respondWithError(ctx, it) }
+            it?.run { ctx.json(it) } ?: run { ctx.status(404) }
+        }.onFailure { respondWithError(ctx, it) }
     }
 
     override fun update(ctx: Context, resourceId: String) {
