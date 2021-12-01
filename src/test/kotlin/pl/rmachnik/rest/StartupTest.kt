@@ -6,35 +6,24 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import pl.rmachnik.Application
 
-
+//basic functional end-to-end tests, do not have time for junit tests or other types of tests
 internal class StartupTest {
-    private val app = Application.app
+    private val app = Application().app
 
     @Test
-    fun `Check basic endpoints`() = TestUtility.test(app) { _, client ->
+    fun `Check basic endpoints`() = TestUtil.test(app) { _, client ->
         assertThat(client.get("/user-offers/api/").code).isEqualTo(200)
         assertThat(client.get("/user-offers/api/").body?.string()).isEqualTo(
             JavalinJackson.defaultMapper().writeValueAsString(Application.Hello("Hi"))
         )
-        assertThat(client.get("/not-found/").code).isEqualTo(404)
-        val exceptionResp = JavalinJackson.defaultMapper().readValue(
-            client.get("/user-offers/api/exception").body?.string(),
-            Application.AppException::class.java
-        )
-        assertThat(exceptionResp.code).isEqualTo(500)
-        assertThat(exceptionResp.message).contains("RuntimeException")
     }
 
     @Test
-    fun `Check test endpoints`() = TestUtility.test(app) { _, client ->
-        assertThat(client.get("/user-offers/api/").code).isEqualTo(200)
-        assertThat(client.get("/user-offers/api/").body?.string()).isEqualTo(
-            JavalinJackson.defaultMapper().writeValueAsString(Application.Hello("Hi"))
-        )
+    fun `Check exception handling for endpoints`() = TestUtil.test(app) { _, client ->
         assertThat(client.get("/not-found/").code).isEqualTo(404)
         val exceptionResp = JavalinJackson.defaultMapper().readValue(
             client.get("/user-offers/api/exception").body?.string(),
-            Application.AppException::class.java
+            Application.SystemError::class.java
         )
         assertThat(exceptionResp.code).isEqualTo(500)
         assertThat(exceptionResp.message).contains("RuntimeException")

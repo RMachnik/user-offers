@@ -1,5 +1,5 @@
 package pl.rmachnik
 
 fun main() {
-    Application.app.start(7070)
+    Application().app.start(7070)
 }
