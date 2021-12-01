@@ -6,7 +6,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import pl.rmachnik.Application
 
-//basic functional end-to-end tests, do not have time for junit tests or other types of tests
+//very basic tests checking exceptional behaviour
 internal class StartupTest {
     private val app = Application().app
 

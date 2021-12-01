@@ -38,6 +38,7 @@ class Application {
                 get("/") {
                     it.json(Hello("Hi"))
                 }
+                //additional endpoint to check exception case
                 get("/exception") {
                     throw RuntimeException("Some test exception.")
                 }
