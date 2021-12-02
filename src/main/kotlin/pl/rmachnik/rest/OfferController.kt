@@ -12,17 +12,19 @@ class OfferController(private val users: Users, private val jobOfferRepository: 
             val userId = ctx.pathParam("user-id")
             val jobOfferDto = ctx.bodyAsClass<JobOfferDto>()
             users.byId(UUID.fromString(userId))?.addJobOffer(jobOfferDto, jobOfferRepository)
-        }.onSuccess { createdOffer ->
-            createdOffer?.let {
-                ctx.json(
-                    JobOfferDto(
-                        it.category, it.startDate.format(ISO_DATE), it.endDateTime.format(
-                            ISO_DATE
+        }
+            .onSuccess { createdOffer ->
+                createdOffer?.let {
+                    ctx.json(
+                        JobOfferDto(
+                            it.category, it.startDate.format(ISO_DATE), it.endDateTime.format(
+                                ISO_DATE
+                            )
                         )
                     )
-                )
-            } ?: ctx.status(400)
-        }.onFailure { respondWithError(ctx, it) }
+                } ?: ctx.status(400)
+            }
+            .onFailure { respondWithError(ctx, it) }
     }
 
     fun getAll(ctx: Context) {
@@ -42,7 +44,9 @@ class OfferController(private val users: Users, private val jobOfferRepository: 
                 )
             }
 
-        }.onSuccess { ctx.json(it) }.onFailure { respondWithError(ctx, it) }
+        }
+            .onSuccess { ctx.json(it) }
+            .onFailure { respondWithError(ctx, it) }
     }
 
     private fun byUserName(name: String?): List<JobOffer> {

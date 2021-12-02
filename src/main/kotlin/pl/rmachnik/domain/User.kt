@@ -4,12 +4,6 @@ import java.time.Clock
 import java.time.OffsetDateTime
 import java.util.*
 
-data class JobOfferDto(
-    val category: Category,
-    val startDate: String,
-    val endDate: String
-)
-
 class User private constructor(
     val id: UUID,
     val login: String,
@@ -50,4 +44,8 @@ class User private constructor(
         return createdOffer
     }
 }
+
+data class UserDto(
+    val login: String, val password: String, val name: String
+)
 

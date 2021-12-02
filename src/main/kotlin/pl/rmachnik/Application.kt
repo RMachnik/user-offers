@@ -29,8 +29,10 @@ class Application {
             it.json(SystemError(404, "Not found."))
         }
     }
+
     private val users = Users(InMemoryUserRepo())
-    private val offerController = OfferController(users, InMemoryJobOfferRepo())
+    private val jobOfferRepository = InMemoryJobOfferRepo()
+    private val offerController = OfferController(users, jobOfferRepository)
 
     init {
         app.routes {
@@ -42,7 +44,7 @@ class Application {
                 get("/exception") {
                     throw RuntimeException("Some test exception.")
                 }
-                crud("/users/{user-id}", UsersController(users))
+                crud("/users/{user-id}", UsersController(users, jobOfferRepository))
                 get("/offers", offerController::getAll)
                 path("/users/{user-id}/offers") {
                     post("/", offerController::create)

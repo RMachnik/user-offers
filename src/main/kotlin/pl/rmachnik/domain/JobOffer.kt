@@ -23,7 +23,7 @@ class JobOffer private constructor(
             return JobOffer(
                 UUID.randomUUID(),
                 newOffer.category,
-                //workaround for the jackson config issue...
+                //workaround for the jackson config issue... assuming that time is parsable
                 OffsetDateTime.of(LocalDate.parse(newOffer.startDate), LocalTime.now(), UTC),
                 OffsetDateTime.of(LocalDate.parse(newOffer.endDate), LocalTime.now(), UTC),
                 createdBy
@@ -35,3 +35,12 @@ class JobOffer private constructor(
         return startDate.isBefore(OffsetDateTime.now(Clock.systemUTC())) && endDateTime.isAfter(OffsetDateTime.now(Clock.systemUTC()))
     }
 }
+
+data class JobOfferDto(
+    val category: Category,
+    //in general good practise for that would be to have iso format with timezone, it would make things consistent
+    val startDate: String,
+    //in general good practise for that would be to have iso format with timezone, it would make things consistent
+    //due to serializer config issue with javalin I just left it as string
+    val endDate: String
+)

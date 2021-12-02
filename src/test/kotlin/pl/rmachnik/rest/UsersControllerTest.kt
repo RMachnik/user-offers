@@ -27,6 +27,31 @@ internal class UsersControllerTest {
             .readValue<List<UsersController.UserInfo>>(client.get("/user-offers/api/users/").body!!.string())
         assertThat(users[0].login).isEqualTo(newUser.login)
     }
+
+    @Test
+    fun `Check that user is deleted`() = TestUtil.test(app) { _, client ->
+        val (_, newUserResp, _) = createUser(client)
+        val createdUser =
+            JavalinJackson.defaultMapper().readValue<UsersController.CreatedUser>(newUserResp.body!!.string())
+
+        assertThat(client.delete("/user-offers/api/users/${createdUser.id}").code).isEqualTo(200)
+        assertThat(client.get("/user-offers/api/users/").body!!.string()).isEqualTo("[]")
+    }
+
+    @Test
+    fun `Check that user is updated`() = TestUtil.test(app) { _, client ->
+        val (_, newUserResp, _) = createUser(client)
+        val createdUser =
+            JavalinJackson.defaultMapper().readValue<UsersController.CreatedUser>(newUserResp.body!!.string())
+
+        val updated = UserDto("updatedZenek", "123", "zenek")
+        val updatedResp = client.patch(
+            "/user-offers/api/users/${createdUser.id}", JavalinJackson.defaultMapper().writeValueAsString(updated)
+        )
+        assertThat(updatedResp.code).isEqualTo(200)
+        assertThat(client.get("/user-offers/api/users/${createdUser.id}").code).isEqualTo(200)
+        assertThat(client.get("/user-offers/api/users/").body!!.string()).contains("updatedZenek")
+    }
 }
 
 fun createUser(client: HttpClient): Triple<UserDto, Response, Response> {
